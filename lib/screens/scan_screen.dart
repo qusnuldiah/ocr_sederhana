@@ -74,7 +74,7 @@ class _ScanScreenState extends State<ScanScreen> {
       );
       return recognizedText.text;
     } finally {
-      // Pastikan resources ditutup 
+      // Pastikan resources ditutup
       textRecognizer.close();
     }
   }
@@ -118,7 +118,11 @@ class _ScanScreenState extends State<ScanScreen> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error saat mengambil/memproses foto: $e')),
+        const SnackBar(
+          content: Text(
+            'Pemindaian gagal! Periksa izin kamera atau coba lagi.',
+          ),
+        ),
       );
     }
   }
@@ -127,7 +131,22 @@ class _ScanScreenState extends State<ScanScreen> {
   Widget build(BuildContext context) {
     // Tampilkan loading jika kamera belum diinisialisasi
     if (!_isCameraInitialized || _controller == null) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return Scaffold(
+        backgroundColor: Colors.grey[900],
+        body: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(color: Colors.yellow),
+              SizedBox(height: 20),
+              Text(
+                'Memuat Kamera... Harap tunggu.',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
     return Scaffold(
